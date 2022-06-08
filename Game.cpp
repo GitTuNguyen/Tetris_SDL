@@ -51,12 +51,49 @@ void Game::DrawBoard()
 	}
 }
 
+void Game::DrawNextShape()
+{
+	Shape nextShape = m_board->getNextShape();
+	nextShape.x = Y_NEXT_SHAPE/SIZE_CELL + 1;
+	nextShape.y = X_NEXT_SHAPE/SIZE_CELL;
+	switch (nextShape.type)
+	{
+	case CellType::I:
+		nextShape.y--;
+		nextShape.x++;
+		break;
+	case CellType::Z:
+		nextShape.y--;
+		break;
+	case CellType::T:
+		nextShape.y--;
+		break;
+	default:
+		break;
+	}
+	m_renderer->DrawShape(nextShape);
+}
+
+void Game::DrawScore()
+{
+	std::string scores_temp = std::to_string(m_board->getScore());
+	std::string scores = "";
+	for (int i = 0; i < 7 - scores_temp.length(); i++)
+	{
+		scores += "0";
+	}
+	scores += scores_temp;
+	m_renderer->DrawText(scores, SIZE_NUMBER, X_SCORE, Y_SCORE , SCORE_HEIGHT, SCORE_WIDTH);
+}
+
 void Game::Update()
 {
 	Uint32 before = SDL_GetTicks(), after;
 	while (!m_isPlayerWantExit)
 	{
 		m_renderer->PreRendering();
+		DrawScore();
+		DrawNextShape();
 		GameResult gameResult = m_board->getGameResult();
 		if (gameResult == GameResult::RUNING)
 		{

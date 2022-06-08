@@ -1,6 +1,7 @@
 #pragma once
 #include "Board.h"
 #include "Renderer.h"
+#include "ConstValue.h"
 #include <iostream>
 class Game {
 public:
@@ -9,6 +10,8 @@ public:
 private:
 	void LoadPicture();
 	void DrawBoard();
+	void DrawNextShape();
+	void DrawScore();
 	void CreateNewMatch();
 	void Rematch();
 	Board* m_board;

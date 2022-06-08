@@ -31,7 +31,6 @@ struct Shape {
 	bool matrix[SIZE_SHAPE][SIZE_SHAPE];
 	int x;
 	int y;
-	int size_Pixel;
 };
 
 class Board {
@@ -40,7 +39,9 @@ public:
 	void Reset();
 	CellType** getBoardData();
 	Shape getCurrentShape();
+	Shape getNextShape();
 	GameResult getGameResult();
+	int getScore();
 	void ConvertShape();
 	bool CheckMoveValid(Shape i_currentShape, MoveType i_move);
 	void Move(MoveType i_move);
@@ -51,6 +52,7 @@ private:
 	Shape m_nextShape;
 	CellType** m_boardData;
 	GameResult m_gameResult;
+	int m_score;
 	Shape CreateNewShape();
 	Shape Rotate(Shape i_shape);
 	bool CheckRowFull(int i_row);
@@ -61,42 +63,42 @@ private:
 			,{0,0,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X , START_Y, SIZE_CELL},
+			START_X , START_Y},
 			{CellType::L,
 			{{1,0,0,0}
 			,{1,0,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL},
+			START_X, START_Y},
 			{CellType::J,
 			{{0,1,0,0}
 			,{0,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL},
+			START_X, START_Y},
 			{CellType::S,
 			{{0,1,1,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL},
+			START_X, START_Y},
 			{CellType::Z,
 			{{1,1,0,0}
 			,{0,1,1,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL},
+			START_X, START_Y},
 			{CellType::T,
 			{{1,1,1,0}
 			,{0,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL},
+			START_X, START_Y},
 			{CellType::O,
 			{{1,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y, SIZE_CELL}
+			START_X, START_Y}
 	};
 };

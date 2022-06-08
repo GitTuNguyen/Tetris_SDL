@@ -25,6 +25,7 @@ void Board::Reset()
             }
         }
     }
+    m_score = 0;
     m_gameResult = GameResult::RUNING;
     m_nextShape = CreateNewShape();
     ConvertShape();
@@ -155,6 +156,16 @@ void Board::Move(MoveType i_move)
     }
 }
 
+int Board::getScore()
+{
+    return m_score;
+}
+
+Shape Board::getNextShape()
+{
+    return m_nextShape;
+}
+
 GameResult Board::getGameResult()
 {
     return m_gameResult;
@@ -188,6 +199,7 @@ void Board::UpdateBoard()
     {
         if (CheckRowFull(i))
         {
+            m_score += 200;
             for (int j = 1; j < BOARD_RENDERER_COL - 1; j++)
             {
                 m_boardData[i][j] = CellType::NONE;

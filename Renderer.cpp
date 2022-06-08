@@ -25,7 +25,11 @@ Renderer::Renderer()
 		printf("Could not create render %s", SDL_GetError());
 		return;
 	}
-
+	if (TTF_Init() < 0)
+	{
+		SDL_Log("%s", TTF_GetError());
+		return;
+	}
 }
 
 void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y)
@@ -83,10 +87,70 @@ void Renderer::DrawShape(Shape i_shape)
 	}
 }
 
+void Renderer::DrawText(std::string i_text, int i_size, int i_X, int i_Y, int i_H, int i_W)
+{
+	TTF_Font* font = TTF_OpenFont("arial.ttf", i_size);
+	SDL_Color White = { 255, 255, 255 };
+	const char* renderText = i_text.c_str();
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, renderText, White);
+	SDL_Texture* message = SDL_CreateTextureFromSurface(m_sdlRenderer, surfaceMessage);
+	SDL_Rect Message_rect;
+	Message_rect.x = i_X;
+	Message_rect.y = i_Y;
+	Message_rect.w = i_W;
+	Message_rect.h = i_H;
+	SDL_RenderCopy(m_sdlRenderer, message, NULL, &Message_rect);
+	SDL_FreeSurface(surfaceMessage);
+}
+void Renderer::DrawScoreBoard()
+{
+	SDL_SetRenderDrawColor(m_sdlRenderer, 255, 255, 255, 255);
+	SDL_Point startPoint = { X_SCORE_BOARD, Y_SCORE_BOARD};
+	SDL_Point endPoint = { X_SCORE_TEXT - 10, Y_SCORE_BOARD};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	endPoint = { X_SCORE_BOARD, Y_SCORE_BOARD + SCORE_BOARD_HEIGHT};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	startPoint = { X_SCORE_BOARD + SCORE_BOARD_WIDTH, Y_SCORE_BOARD};
+	endPoint = {X_SCORE_TEXT + SCORE_TEXT_WIDTH + 10, Y_SCORE_BOARD};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	endPoint = {startPoint.x, startPoint.y + SCORE_BOARD_HEIGHT};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	startPoint = { X_SCORE_BOARD, endPoint.y };
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+	std::string score_text = "SCORE";
+	DrawText(score_text, SIZE_TEXT, X_SCORE_TEXT, Y_SCORE_TEXT, SCORE_TEXT_HEIGHT, SCORE_TEXT_WIDTH);
+}
+
+void Renderer::DrawNextShapeBoard()
+{
+	SDL_SetRenderDrawColor(m_sdlRenderer, 255, 255, 255, 255);
+	SDL_Point startPoint = { X_NEXT_SHAPE_BOARD, Y_NEXT_SHAPE_BOARD};
+	SDL_Point endPoint = { X_NEXT_SHAPE_TEXT - 10, startPoint.y };
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	endPoint = { startPoint.x, (startPoint.y + NEXT_SHAPE_BOARD_HEIGHT)};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	startPoint = { X_NEXT_SHAPE_BOARD + NEXT_SHAPE_BOARD_WIDTH, Y_NEXT_SHAPE_BOARD};
+	endPoint = { X_NEXT_SHAPE_TEXT + NEXT_SHAPE_TEXT_WIDTH + 10, startPoint.y };
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	endPoint = { startPoint.x, (startPoint.y + NEXT_SHAPE_BOARD_HEIGHT)};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	startPoint = { X_NEXT_SHAPE_BOARD , endPoint.y };
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	std::string score_text = "NEXT";
+	DrawText(score_text, SIZE_TEXT, X_NEXT_SHAPE_TEXT, Y_NEXT_SHAPE_TEXT, NEXT_SHAPE_TEXT_HEIGHT, NEXT_SHAPE_TEXT_WIDTH);
+}
+
 void Renderer::PreRendering()
 {
 	SDL_SetRenderDrawColor(m_sdlRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(m_sdlRenderer);
+	DrawScoreBoard();
+	DrawNextShapeBoard();
 }
 
 void Renderer::PostFrame()
@@ -97,13 +161,9 @@ void Renderer::PostFrame()
 
 void Renderer::CleanUp()
 {
-
 	SDL_DestroyWindow(m_window);
-
-	//Destroy a renderer
 	SDL_DestroyRenderer(m_sdlRenderer);
-
-	//cleans up all initialized subsystems
+	TTF_Quit();
 	SDL_Quit();
 }
 
