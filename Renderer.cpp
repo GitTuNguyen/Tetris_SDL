@@ -101,6 +101,7 @@ void Renderer::DrawText(std::string i_text, int i_size, int i_X, int i_Y, int i_
 	Message_rect.h = i_H;
 	SDL_RenderCopy(m_sdlRenderer, message, NULL, &Message_rect);
 	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(message);
 }
 void Renderer::DrawScoreBoard()
 {
