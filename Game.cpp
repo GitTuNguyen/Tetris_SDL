@@ -164,3 +164,9 @@ void Game::Update()
 	}
 	m_renderer->CleanUp();
 }
+
+Game::~Game()
+{
+	delete m_board;
+	delete m_renderer;
+}

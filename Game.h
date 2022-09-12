@@ -7,6 +7,7 @@ class Game {
 public:
 	Game();
 	void Update();
+	~Game();
 private:
 	void LoadPicture();
 	void DrawBoard();

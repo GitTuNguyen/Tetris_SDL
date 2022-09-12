@@ -6,4 +6,8 @@ void main()
 	Game* game = new Game();
 
 	game->Update();
+
+	delete game;
+
+	getchar();
 }
