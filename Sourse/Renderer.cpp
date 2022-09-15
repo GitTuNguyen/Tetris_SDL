@@ -89,7 +89,7 @@ void Renderer::DrawShape(Shape i_shape)
 
 void Renderer::DrawText(std::string i_text, int i_size, int i_X, int i_Y, int i_H, int i_W)
 {
-	TTF_Font* font = TTF_OpenFont("arial.ttf", i_size);
+	TTF_Font* font = TTF_OpenFont("./Data/arial.ttf", i_size);
 	SDL_Color White = { 255, 255, 255 };
 	const char* renderText = i_text.c_str();
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, renderText, White);
@@ -172,7 +172,7 @@ void Renderer::LoadTexture(std::string i_ImageName)
 {
 	SDL_Surface* tempSurface = NULL;
 	SDL_Texture* texture = NULL;
-	std::string str = i_ImageName + ".bmp";
+	std::string str = "./Data/" + i_ImageName + ".bmp";
 	tempSurface = SDL_LoadBMP(str.c_str());
 	texture = SDL_CreateTextureFromSurface(m_sdlRenderer, tempSurface);
 	SDL_FreeSurface(tempSurface);

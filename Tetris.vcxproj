@@ -143,16 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Tetris.cpp" />
+    <ClCompile Include="Sourse\Board.cpp" />
+    <ClCompile Include="Sourse\Game.cpp" />
+    <ClCompile Include="Sourse\Renderer.cpp" />
+    <ClCompile Include="Sourse\Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Board.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="ConstValue.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Sourse\Board.h" />
+    <ClInclude Include="Sourse\ConstValue.h" />
+    <ClInclude Include="Sourse\Game.h" />
+    <ClInclude Include="Sourse\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
