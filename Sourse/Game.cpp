@@ -93,8 +93,7 @@ void Game::Update()
 	while (!m_isPlayerWantExit)
 	{
 		m_renderer->PreRendering();
-		DrawScore();
-		DrawNextShape();
+		
 		m_inputManager->UpdateInput();
 		m_isPlayerWantExit = m_inputManager->IsGoingToQuit();
 		GameResult gameResult = m_board->getGameResult();
@@ -132,7 +131,9 @@ void Game::Update()
 			}
 			m_renderer->DrawShape(m_board->getCurrentShape());
 			m_renderer->DrawScoreBoard();
+			DrawScore();			
 			m_renderer->DrawNextShapeBoard();
+			DrawNextShape();
 			DrawBoard();
 		}
 		else {
@@ -147,4 +148,5 @@ Game::~Game()
 {
 	delete m_board;
 	delete m_renderer;
+	delete m_inputManager;
 }

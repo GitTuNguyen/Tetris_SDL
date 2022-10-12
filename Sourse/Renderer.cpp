@@ -160,6 +160,10 @@ void Renderer::PostFrame()
 
 void Renderer::CleanUp()
 {
+	for (std::pair<std::string, SDL_Texture*> loadTexture : m_loadedTextures)
+	{
+		SDL_DestroyTexture(loadTexture.second);
+	}
 	SDL_DestroyWindow(m_window);
 	SDL_DestroyRenderer(m_sdlRenderer);
 	TTF_Quit();

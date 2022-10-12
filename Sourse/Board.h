@@ -36,6 +36,7 @@ struct Shape {
 class Board {
 public:
 	Board();
+	~Board();
 	void Reset();
 	CellType** getBoardData();
 	Shape getCurrentShape();

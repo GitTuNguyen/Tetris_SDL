@@ -230,3 +230,11 @@ void Board::UpdateGameResult()
         }
     }
 }
+
+Board::~Board()
+{
+    for (int i = 0; i < BOARD_RENDERER_ROW; i++)
+    {
+        delete m_boardData[i];
+    }
+}
