@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "InputManager.h"
 #include <iostream>
+#include <vector>
 class Game {
 public:
 	Game();
@@ -13,8 +14,7 @@ private:
 	void DrawBoard();
 	void DrawNextShape();
 	void DrawScore();
-	void CreateNewMatch();
-	void Rematch();
+	void CreateNewGame();
 	Board* m_board;
 	Renderer* m_renderer;
 	InputManager* m_inputManager;

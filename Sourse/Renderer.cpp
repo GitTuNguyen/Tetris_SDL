@@ -132,7 +132,7 @@ void Renderer::DrawScoreBoard()
 	startPoint = { X_SCORE_BOARD, endPoint.y };
 	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 	std::string score_text = "SCORE";
-	DrawText(score_text, SIZE_TEXT, X_SCORE_TEXT, Y_SCORE_TEXT, SCORE_TEXT_HEIGHT, SCORE_TEXT_WIDTH);
+	DrawText(score_text, TEXT_SIZE, X_SCORE_TEXT, Y_SCORE_TEXT, SCORE_TEXT_HEIGHT, SCORE_TEXT_WIDTH);
 }
 
 void Renderer::DrawNextShapeBoard()
@@ -156,7 +156,55 @@ void Renderer::DrawNextShapeBoard()
 	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 
 	std::string score_text = "NEXT";
-	DrawText(score_text, SIZE_TEXT, X_NEXT_SHAPE_TEXT, Y_NEXT_SHAPE_TEXT, NEXT_SHAPE_TEXT_HEIGHT, NEXT_SHAPE_TEXT_WIDTH);
+	DrawText(score_text, TEXT_SIZE, X_NEXT_SHAPE_TEXT, Y_NEXT_SHAPE_TEXT, NEXT_SHAPE_TEXT_HEIGHT, NEXT_SHAPE_TEXT_WIDTH);
+}
+
+void Renderer::DrawGameOverPopup()
+{
+
+	SDL_Rect newRect;
+	newRect.w = GAME_OVER_POPUP_WIDTH * SIZE_CELL;
+	newRect.h = GAME_OVER_POPUP_HEIGHT * SIZE_CELL;
+	newRect.x = (WINDOW_WIDTH - newRect.w) / 2;
+	newRect.y = (WINDOW_HEIGHT - newRect.h) / 2;
+
+	SDL_SetRenderDrawColor(m_sdlRenderer, 255, 255, 255, 255);
+
+	SDL_Point startPoint = { newRect.x - 1, newRect.y - 1};
+	SDL_Point endPoint = { startPoint.x, startPoint.y + newRect.h + 2};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	endPoint = { newRect.x + newRect.w + 1, newRect.y - 1};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	startPoint = { newRect.x + newRect.w + 1, newRect.y + newRect.h + 1};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	endPoint = { newRect.x - 1, newRect.y + newRect.h + 1};
+	SDL_RenderDrawLine(m_sdlRenderer, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+
+	SDL_SetRenderDrawColor(m_sdlRenderer, 0, 0, 0, 255);
+
+	SDL_RenderFillRect(m_sdlRenderer, &newRect);
+
+	DrawText("GAME OVER", TEXT_SIZE * 2, newRect.x + ((GAME_OVER_POPUP_WIDTH - TEXT_GAME_OVER_WIDTH) * SIZE_CELL) / 2, newRect.y + SIZE_CELL / 2, TEXT_GAME_OVER_HEIGHT * SIZE_CELL, TEXT_GAME_OVER_WIDTH * SIZE_CELL);
+
+	DrawText("PLAY AGAIN?", TEXT_SIZE, newRect.x + ((GAME_OVER_POPUP_WIDTH - TEXT_PLAY_AGAIN_WIDTH) * SIZE_CELL) / 2, newRect.y + SIZE_CELL * 2 + SIZE_CELL / 2, TEXT_PLAY_AGAIN_HEIGHT * SIZE_CELL, TEXT_PLAY_AGAIN_WIDTH * SIZE_CELL);
+
+	newRect.x = newRect.x + SIZE_CELL * 2;
+	newRect.y = newRect.y + SIZE_CELL * 3 + SIZE_CELL / 2;
+	newRect.w = YES_BUTTON_WIDTH * SIZE_CELL;
+	newRect.h = YES_BUTTON_HEIGHT * SIZE_CELL;
+
+
+	SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["YES"], NULL, &newRect);
+
+	newRect.x = newRect.x + SIZE_CELL * 2;
+	newRect.y = newRect.y;
+	newRect.w = NO_BUTTON_WIDTH * SIZE_CELL;
+	newRect.h = NO_BUTTON_HEIGHT * SIZE_CELL;
+
+	SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["NO"], NULL, &newRect);
 }
 
 void Renderer::PreRendering()

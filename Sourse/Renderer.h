@@ -13,6 +13,7 @@ public:
 	void DrawText(std::string text, int i_size, int i_X, int i_Y, int i_H, int i_W);
 	void DrawScoreBoard();
 	void DrawNextShapeBoard();
+	void DrawGameOverPopup();
 	void PostFrame();
 	void CleanUp();
 	void LoadTexture(std::string i_imageName);

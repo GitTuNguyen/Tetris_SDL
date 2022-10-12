@@ -1,6 +1,5 @@
 #pragma once
 #include "Game.h"
-#include "Board.h"
 
 Game::Game()
 {
@@ -13,30 +12,24 @@ Game::Game()
 
 void Game::LoadPicture()
 {
-	std::string file_name[8] = { "I", "L", "J", "S", "Z", "T", "O", "WALL"};
-	for (int i = 0; i < sizeof(file_name) / sizeof(std::string); i++)
+	std::vector<std::string> gameTextures = { "I", "L", "J", "S", "Z", "T", "O", "WALL", "YES", "NO"};
+	for (int i = 0; i < gameTextures.size(); i++)
 	{
-		m_renderer->LoadTexture(file_name[i]);
+		m_renderer->LoadTexture(gameTextures[i]);
 	}
 }
 
-void Game::CreateNewMatch()
+void Game::CreateNewGame()
 {
 	m_board->Reset();
+	m_renderer->PreRendering();
+	m_renderer->DrawScoreBoard();
+	m_renderer->DrawNextShapeBoard();
+	m_renderer->DrawShape(m_board->getCurrentShape());
+	DrawScore();
+	DrawNextShape();
 }
-void Game::Rematch()
-{
-	char inputPlayer;
-	std::cout << "Play again? (Y to play again, another key to quit): ";
-	std::cin >> inputPlayer;
-	if (inputPlayer == 'Y' || inputPlayer == 'y')
-	{
-		CreateNewMatch();
-	}
-	else {
-		m_isPlayerWantExit = true;
-	}
-}
+
 void Game::DrawBoard()
 {
 	CellType** boardData = m_board->getBoardData();
@@ -79,13 +72,18 @@ void Game::Update()
 	Uint32 before = SDL_GetTicks(), after;
 	while (!m_isPlayerWantExit)
 	{
-		m_renderer->PreRendering();
-		
+		m_renderer->PreRendering();		
 		m_inputManager->UpdateInput();
 		m_isPlayerWantExit = m_inputManager->IsGoingToQuit();
+		DrawBoard();
+		m_renderer->DrawScoreBoard();
+		m_renderer->DrawNextShapeBoard();
+		m_renderer->DrawShape(m_board->getCurrentShape());
+		DrawScore();
+		DrawNextShape();
 		GameResult gameResult = m_board->getGameResult();
 		if (gameResult == GameResult::RUNING)
-		{
+		{			
 			if (m_inputManager->IsKeyUpUp())
 			{
 				m_board->Move(MoveType::UP);
@@ -115,16 +113,28 @@ void Game::Update()
 				else {
 					m_board->Move(MoveType::DOWN);
 				}
-			}
-			DrawBoard();
-			m_renderer->DrawShape(m_board->getCurrentShape());
-			m_renderer->DrawScoreBoard();
-			DrawScore();			
-			m_renderer->DrawNextShapeBoard();			
-			DrawNextShape();
+			}			
 		}
 		else {
-			Rematch();
+			m_renderer->DrawGameOverPopup();
+			int yesButtonX = (WINDOW_WIDTH - GAME_OVER_POPUP_WIDTH * SIZE_CELL) / 2 + SIZE_CELL * 2;
+			int yesButtonY = (WINDOW_HEIGHT - GAME_OVER_POPUP_HEIGHT * SIZE_CELL) / 2 + SIZE_CELL * 3 + SIZE_CELL / 2;
+			int noButtonX = yesButtonX + SIZE_CELL * 2;
+			int noButtonY = yesButtonY;
+			if (m_inputManager->IsMouseUp())
+			{
+				int mouseX = m_inputManager->GetMouseX();
+				int mouseY = m_inputManager->GetMouseY();
+				
+				if (mouseX >= yesButtonX && mouseX <= yesButtonX + YES_BUTTON_WIDTH * SIZE_CELL && mouseY >= yesButtonY && mouseY <= yesButtonY + YES_BUTTON_HEIGHT * SIZE_CELL)
+				{
+					CreateNewGame();
+				}
+				else if (mouseX >= noButtonX && mouseX <= noButtonX + NO_BUTTON_WIDTH * SIZE_CELL && mouseY >= noButtonY && mouseY <= noButtonY + NO_BUTTON_HEIGHT * SIZE_CELL) 
+				{
+					m_isPlayerWantExit = true;
+				}
+			}
 		}
 		m_renderer->PostFrame();
 	}
