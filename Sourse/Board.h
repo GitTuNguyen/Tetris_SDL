@@ -14,6 +14,7 @@ enum CellType {
 	NONE,
 	WALL
 };
+
 enum MoveType {
 	UP,
 	DOWN,
@@ -31,6 +32,8 @@ struct Shape {
 	bool matrix[SHAPE_MATRIX_SIZE][SHAPE_MATRIX_SIZE];
 	int x;
 	int y;
+	int height;
+	int width;
 };
 
 class Board {
@@ -64,42 +67,42 @@ private:
 			,{0,0,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X , SHAPE_START_Y},
+			SHAPE_START_X , SHAPE_START_Y, 1, 4},
 			{CellType::L,
 			{{1,0,0,0}
 			,{1,0,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y},
+			SHAPE_START_X, SHAPE_START_Y, 3, 2},
 			{CellType::J,
 			{{0,1,0,0}
 			,{0,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y},
+			SHAPE_START_X, SHAPE_START_Y, 3, 2},
 			{CellType::S,
 			{{0,1,1,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y},
+			SHAPE_START_X, SHAPE_START_Y, 2, 3},
 			{CellType::Z,
 			{{1,1,0,0}
 			,{0,1,1,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y},
+			SHAPE_START_X, SHAPE_START_Y, 2, 3},
 			{CellType::T,
 			{{1,1,1,0}
 			,{0,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y},
+			SHAPE_START_X, SHAPE_START_Y, 2, 3},
 			{CellType::O,
 			{{1,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			SHAPE_START_X, SHAPE_START_Y}
+			SHAPE_START_X, SHAPE_START_Y, 2, 2}
 	};
 };

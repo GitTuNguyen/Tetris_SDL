@@ -1,8 +1,17 @@
 #include "Renderer.h"
+#ifndef __ANDROID__
+#include <Windows.h>
+#endif
+#undef DrawText
 
 Renderer::Renderer()
 {
-
+	//Hide console window
+#ifndef __ANDROID__
+	HWND windowHandle = GetConsoleWindow();
+	ShowWindow(windowHandle, SW_HIDE);
+#endif
+	//Init
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		printf("Unable to initialize SDL %s\n", SDL_GetError());
@@ -17,7 +26,6 @@ Renderer::Renderer()
 		return;
 	}
 
-
 	//create a renderer
 	m_sdlRenderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
 	if (m_sdlRenderer == NULL)
@@ -25,6 +33,11 @@ Renderer::Renderer()
 		printf("Could not create render %s", SDL_GetError());
 		return;
 	}
+
+	//Render in center of window
+	SDL_RenderSetLogicalSize(m_sdlRenderer, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	//Init ttf
 	if (TTF_Init() < 0)
 	{
 		SDL_Log("%s", TTF_GetError());
@@ -32,11 +45,11 @@ Renderer::Renderer()
 	}
 }
 
-void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y)
+void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y, int i_scale)
 {
 	SDL_Rect newRect;
-	newRect.w = SIZE_CELL - 3;
-	newRect.h = SIZE_CELL - 3;
+	newRect.w = (SIZE_CELL - 3) * i_scale;
+	newRect.h = (SIZE_CELL - 3) * i_scale;
 	newRect.x = i_Y * SIZE_CELL + 3;
 	newRect.y = i_X * SIZE_CELL + 3;
 	if (i_cellType == CellType::I)
@@ -73,7 +86,7 @@ void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y)
 	}
 }
 
-void Renderer::DrawShape(Shape i_shape)
+void Renderer::DrawShape(Shape i_shape, int i_scale)
 {
 	for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
 	{
@@ -81,7 +94,7 @@ void Renderer::DrawShape(Shape i_shape)
 		{
 			if (i_shape.matrix[i][j] != 0)
 			{
-				DrawCell(i_shape.type, i + i_shape.x, j + i_shape.y);
+				DrawCell(i_shape.type, i + i_shape.x, j + i_shape.y, i_scale);
 			}
 		}
 	}

@@ -55,24 +55,11 @@ void Game::DrawBoard()
 void Game::DrawNextShape()
 {
 	Shape nextShape = m_board->getNextShape();
-	nextShape.x = Y_NEXT_SHAPE/SIZE_CELL + 1;
-	nextShape.y = X_NEXT_SHAPE/SIZE_CELL;
-	switch (nextShape.type)
-	{
-	case CellType::I:
-		nextShape.y--;
-		nextShape.x++;
-		break;
-	case CellType::Z:
-		nextShape.y--;
-		break;
-	case CellType::T:
-		nextShape.y--;
-		break;
-	default:
-		break;
-	}
-	m_renderer->DrawShape(nextShape);
+	
+	nextShape.x = (Y_NEXT_SHAPE_BOARD / SIZE_CELL + (NEXT_SHAPE_BOARD_HEIGHT / SIZE_CELL - nextShape.height) / 2);
+	nextShape.y = (X_NEXT_SHAPE_BOARD / SIZE_CELL + (NEXT_SHAPE_BOARD_WIDTH / SIZE_CELL - nextShape.width) / 2);
+	
+	m_renderer->DrawShape(nextShape, NEXT_SHAPE_SCALE);
 }
 
 void Game::DrawScore()
@@ -129,12 +116,12 @@ void Game::Update()
 					m_board->Move(MoveType::DOWN);
 				}
 			}
+			DrawBoard();
 			m_renderer->DrawShape(m_board->getCurrentShape());
 			m_renderer->DrawScoreBoard();
 			DrawScore();			
-			m_renderer->DrawNextShapeBoard();
+			m_renderer->DrawNextShapeBoard();			
 			DrawNextShape();
-			DrawBoard();
 		}
 		else {
 			Rematch();
