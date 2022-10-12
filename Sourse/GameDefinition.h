@@ -1,17 +1,25 @@
 #pragma once
 #define SDL_MAIN_HANDLED
+//Board
 #define BOARD_RENDERER_COL 12
 #define BOARD_RENDERER_ROW 22
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
+#define BOARD_X 0
+#define BOARD_Y 0
 #define SIZE_CELL 30
+
+//Window
 #define WINDOW_WIDTH (BOARD_RENDERER_COL * SIZE_CELL * 2)
 #define WINDOW_HEIGHT (BOARD_RENDERER_ROW * SIZE_CELL)
-#define SIZE_SHAPE 4
-#define START_X 1
-#define START_Y 4
 
-#define SIZE_TEXT 25
+//SHAPE
+#define SHAPE_MATRIX_SIZE 4
+#define SHAPE_START_X 1
+#define SHAPE_START_Y 4
+
+//
+#define SIZE_TEXT 32
 #define SIZE_NUMBER 15
 
 #define X_SCORE_BOARD (15 * SIZE_CELL)
@@ -41,3 +49,4 @@
 
 #define X_NEXT_SHAPE (X_NEXT_SHAPE_BOARD + 3 * SIZE_CELL)
 #define Y_NEXT_SHAPE (Y_NEXT_SHAPE_BOARD + 2 * SIZE_CELL)
+

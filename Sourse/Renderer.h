@@ -1,9 +1,9 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "Board.h"
 #include <map>
 #include <string>
-#include <SDL_ttf.h>
 class Renderer
 {
 public:

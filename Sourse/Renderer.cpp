@@ -35,10 +35,10 @@ Renderer::Renderer()
 void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y)
 {
 	SDL_Rect newRect;
-	newRect.w = SIZE_CELL;
-	newRect.h = SIZE_CELL;
-	newRect.x = i_Y * SIZE_CELL;
-	newRect.y = i_X * SIZE_CELL;
+	newRect.w = SIZE_CELL - 3;
+	newRect.h = SIZE_CELL - 3;
+	newRect.x = i_Y * SIZE_CELL + 3;
+	newRect.y = i_X * SIZE_CELL + 3;
 	if (i_cellType == CellType::I)
 	{
 		SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["I"], NULL, &newRect);
@@ -75,9 +75,9 @@ void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y)
 
 void Renderer::DrawShape(Shape i_shape)
 {
-	for (int i = 0; i < SIZE_SHAPE; i++)
+	for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
 	{
-		for (int j = 0; j < SIZE_SHAPE; j++)
+		for (int j = 0; j < SHAPE_MATRIX_SIZE; j++)
 		{
 			if (i_shape.matrix[i][j] != 0)
 			{
@@ -89,7 +89,7 @@ void Renderer::DrawShape(Shape i_shape)
 
 void Renderer::DrawText(std::string i_text, int i_size, int i_X, int i_Y, int i_H, int i_W)
 {
-	TTF_Font* font = TTF_OpenFont("./Data/arial.ttf", i_size);
+	TTF_Font* font = TTF_OpenFont("Data/arial.ttf", i_size);
 	SDL_Color White = { 255, 255, 255 };
 	const char* renderText = i_text.c_str();
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, renderText, White);
@@ -150,8 +150,6 @@ void Renderer::PreRendering()
 {
 	SDL_SetRenderDrawColor(m_sdlRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(m_sdlRenderer);
-	DrawScoreBoard();
-	DrawNextShapeBoard();
 }
 
 void Renderer::PostFrame()
@@ -172,7 +170,7 @@ void Renderer::LoadTexture(std::string i_ImageName)
 {
 	SDL_Surface* tempSurface = NULL;
 	SDL_Texture* texture = NULL;
-	std::string str = "./Data/" + i_ImageName + ".bmp";
+	std::string str = "Data/" + i_ImageName + ".bmp";
 	tempSurface = SDL_LoadBMP(str.c_str());
 	texture = SDL_CreateTextureFromSurface(m_sdlRenderer, tempSurface);
 	SDL_FreeSurface(tempSurface);

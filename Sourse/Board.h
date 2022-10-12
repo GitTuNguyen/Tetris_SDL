@@ -1,5 +1,5 @@
 #pragma once
-#include "ConstValue.h"
+#include "GameDefinition.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -28,7 +28,7 @@ enum GameResult {
 
 struct Shape {
 	CellType type;
-	bool matrix[SIZE_SHAPE][SIZE_SHAPE];
+	bool matrix[SHAPE_MATRIX_SIZE][SHAPE_MATRIX_SIZE];
 	int x;
 	int y;
 };
@@ -63,42 +63,42 @@ private:
 			,{0,0,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X , START_Y},
+			SHAPE_START_X , SHAPE_START_Y},
 			{CellType::L,
 			{{1,0,0,0}
 			,{1,0,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y},
+			SHAPE_START_X, SHAPE_START_Y},
 			{CellType::J,
 			{{0,1,0,0}
 			,{0,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y},
+			SHAPE_START_X, SHAPE_START_Y},
 			{CellType::S,
 			{{0,1,1,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y},
+			SHAPE_START_X, SHAPE_START_Y},
 			{CellType::Z,
 			{{1,1,0,0}
 			,{0,1,1,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y},
+			SHAPE_START_X, SHAPE_START_Y},
 			{CellType::T,
 			{{1,1,1,0}
 			,{0,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y},
+			SHAPE_START_X, SHAPE_START_Y},
 			{CellType::O,
 			{{1,1,0,0}
 			,{1,1,0,0}
 			,{0,0,0,0}
 			,{0,0,0,0}},
-			START_X, START_Y}
+			SHAPE_START_X, SHAPE_START_Y}
 	};
 };

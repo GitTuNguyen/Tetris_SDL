@@ -58,10 +58,10 @@ int Board::CollumsCollide(Shape i_shape)
 {
     int count = 0;
     if (i_shape.y < 0) count += (0 - i_shape.y);
-    if (i_shape.y + SIZE_SHAPE > BOARD_RENDERER_COL - 1) count += (i_shape.y + SIZE_SHAPE) - (BOARD_RENDERER_COL - 1);
-    for (int i = 0; i < SIZE_SHAPE; i++)
+    if (i_shape.y + SHAPE_MATRIX_SIZE > BOARD_RENDERER_COL - 1) count += (i_shape.y + SHAPE_MATRIX_SIZE) - (BOARD_RENDERER_COL - 1);
+    for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
     {
-        for (int j = 0; j < SIZE_SHAPE; j++)
+        for (int j = 0; j < SHAPE_MATRIX_SIZE; j++)
         {
             if (i_shape.matrix[i][j] != 0 && m_boardData[i + i_shape.x][j + i_shape.y] != CellType::NONE)
             {
@@ -71,16 +71,16 @@ int Board::CollumsCollide(Shape i_shape)
         }
     }
     if (i_shape.y < 0) count += (0 - i_shape.y);
-    if (i_shape.y + SIZE_SHAPE > BOARD_RENDERER_COL - 1) count += (i_shape.y + SIZE_SHAPE) - (BOARD_RENDERER_COL - 1);
+    if (i_shape.y + SHAPE_MATRIX_SIZE > BOARD_RENDERER_COL - 1) count += (i_shape.y + SHAPE_MATRIX_SIZE) - (BOARD_RENDERER_COL - 1);
     return count;
 }
 Shape Board::Rotate(Shape i_shape)
 {
     if (i_shape.type == CellType::O) return i_shape;
     Shape temp = i_shape;
-    for (int i = 0; i < SIZE_SHAPE; i++) {
-        for (int j = 0; j < SIZE_SHAPE; j++) {
-            temp.matrix[i][j] = i_shape.matrix[SIZE_SHAPE - j - 1][i];
+    for (int i = 0; i < SHAPE_MATRIX_SIZE; i++) {
+        for (int j = 0; j < SHAPE_MATRIX_SIZE; j++) {
+            temp.matrix[i][j] = i_shape.matrix[SHAPE_MATRIX_SIZE - j - 1][i];
         }
     }
     int collumsCollide = CollumsCollide(temp);
@@ -116,8 +116,8 @@ bool Board::CheckMoveValid(Shape i_currentShape, MoveType i_move)
     {
         temp.x++;
     }
-    for (int i = 0; i < SIZE_SHAPE; i++) {
-        for (int j = 0; j < SIZE_SHAPE; j++) {
+    for (int i = 0; i < SHAPE_MATRIX_SIZE; i++) {
+        for (int j = 0; j < SHAPE_MATRIX_SIZE; j++) {
             if (temp.matrix[i][j] != 0 && m_boardData[i + temp.x][j + temp.y] != CellType::NONE)
             {
                 return false;
@@ -185,9 +185,9 @@ bool Board::CheckRowFull(int i_row)
 
 void Board::UpdateBoard()
 {
-    for (int i = 0; i < SIZE_SHAPE; i++)
+    for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
     {
-        for (int j = 0; j < SIZE_SHAPE; j++)
+        for (int j = 0; j < SHAPE_MATRIX_SIZE; j++)
         {
             if (m_currentShape.matrix[i][j] != 0)
             {
@@ -220,9 +220,9 @@ void Board::UpdateBoard()
 
 void Board::UpdateGameResult()
 {
-    for (int i = 0; i < SIZE_SHAPE; i++) {
-        for (int j = 0; j < SIZE_SHAPE; j++) {
-            if (m_nextShape.matrix[i][j] != 0 && m_boardData[i + START_X][j + START_Y] != CellType::NONE)
+    for (int i = 0; i < SHAPE_MATRIX_SIZE; i++) {
+        for (int j = 0; j < SHAPE_MATRIX_SIZE; j++) {
+            if (m_nextShape.matrix[i][j] != 0 && m_boardData[i + SHAPE_START_X][j + SHAPE_START_Y] != CellType::NONE)
             {
                 m_gameResult = GameResult::END;
                 break;

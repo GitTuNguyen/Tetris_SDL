@@ -151,13 +151,15 @@
   <ItemGroup>
     <ClCompile Include="Sourse\Board.cpp" />
     <ClCompile Include="Sourse\Game.cpp" />
+    <ClCompile Include="Sourse\InputManager.cpp" />
     <ClCompile Include="Sourse\Renderer.cpp" />
-    <ClCompile Include="Sourse\Tetris.cpp" />
+    <ClCompile Include="Sourse\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sourse\Board.h" />
-    <ClInclude Include="Sourse\ConstValue.h" />
+    <ClInclude Include="Sourse\GameDefinition.h" />
     <ClInclude Include="Sourse\Game.h" />
+    <ClInclude Include="Sourse\InputManager.h" />
     <ClInclude Include="Sourse\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

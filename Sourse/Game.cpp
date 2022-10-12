@@ -6,6 +6,7 @@ Game::Game()
 {
 	m_board = new Board();
 	m_renderer = new Renderer();
+	m_inputManager = new InputManager();
 	m_isPlayerWantExit = false;
 	LoadPicture();
 }
@@ -94,51 +95,26 @@ void Game::Update()
 		m_renderer->PreRendering();
 		DrawScore();
 		DrawNextShape();
+		m_inputManager->UpdateInput();
+		m_isPlayerWantExit = m_inputManager->IsGoingToQuit();
 		GameResult gameResult = m_board->getGameResult();
 		if (gameResult == GameResult::RUNING)
 		{
-			while (SDL_PollEvent(&mainEvent))
+			if (m_inputManager->IsKeyUpUp())
 			{
-				switch (mainEvent.type)
-				{
-				case SDL_QUIT:
-				{
-					m_isPlayerWantExit = true;
-					break;
-				}
-				case SDL_KEYDOWN:
-				{
-					switch (mainEvent.key.keysym.sym)
-					{
-					case SDLK_UP:
-					{
-						m_board->Move(MoveType::UP);
-						break;
-					}
-					case SDLK_DOWN:
-					{
-						m_board->Move(MoveType::DOWN);
-						break;
-					}
-					case SDLK_LEFT:
-					{
-						m_board->Move(MoveType::LEFT);
-						break;
-					}
-					case SDLK_RIGHT:
-					{
-						m_board->Move(MoveType::RIGHT);
-						break;
-					}
-					default:
-						break;
-					}
-				}
-				default:
-				{
-					break;
-				}
-				}
+				m_board->Move(MoveType::UP);
+			}
+			if (m_inputManager->IsKeyDownDown())
+			{
+				m_board->Move(MoveType::DOWN);
+			}
+			if (m_inputManager->IsKeyLeftDown())
+			{
+				m_board->Move(MoveType::LEFT);
+			}
+			if (m_inputManager->IsKeyRightDown())
+			{
+				m_board->Move(MoveType::RIGHT);
 			}
 			after = SDL_GetTicks();
 			if (after - before >= 500)
@@ -155,6 +131,8 @@ void Game::Update()
 				}
 			}
 			m_renderer->DrawShape(m_board->getCurrentShape());
+			m_renderer->DrawScoreBoard();
+			m_renderer->DrawNextShapeBoard();
 			DrawBoard();
 		}
 		else {

@@ -1,7 +1,6 @@
-#include "ConstValue.h"
 #include "Game.h"
 
-void main()
+int main()
 {
 	Game* game = new Game();
 
@@ -9,5 +8,5 @@ void main()
 
 	delete game;
 
-	getchar();
+	return 0;
 }
