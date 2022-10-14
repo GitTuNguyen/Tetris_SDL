@@ -12,7 +12,7 @@ Game::Game()
 
 void Game::LoadPicture()
 {
-	std::vector<std::string> gameTextures = { "I", "L", "J", "S", "Z", "T", "O", "WALL", "YES", "NO"};
+	std::vector<std::string> gameTextures = { "I", "L", "J", "S", "Z", "T", "O", "Wall", "YES", "NO"};
 	for (int i = 0; i < gameTextures.size(); i++)
 	{
 		m_renderer->LoadTexture(gameTextures[i]);
@@ -25,7 +25,7 @@ void Game::CreateNewGame()
 	m_renderer->PreRendering();
 	m_renderer->DrawScoreBoard();
 	m_renderer->DrawNextShapeBoard();
-	m_renderer->DrawShape(m_board->getCurrentShape());
+	m_renderer->DrawCurrentShape(m_board->getCurrentShape());
 	DrawScore();
 	DrawNextShape();
 }
@@ -39,7 +39,7 @@ void Game::DrawBoard()
 		{
 			if (boardData[i][j] != CellType::NONE)
 			{
-				m_renderer->DrawCell(boardData[i][j], i, j);
+				m_renderer->DrawCell(boardData[i][j], j * SIZE_CELL, i * SIZE_CELL);
 			}
 		}
 	}
@@ -49,10 +49,22 @@ void Game::DrawNextShape()
 {
 	Shape nextShape = m_board->getNextShape();
 	
-	nextShape.x = (Y_NEXT_SHAPE_BOARD / SIZE_CELL + (NEXT_SHAPE_BOARD_HEIGHT / SIZE_CELL - nextShape.height) / 2);
-	nextShape.y = (X_NEXT_SHAPE_BOARD / SIZE_CELL + (NEXT_SHAPE_BOARD_WIDTH / SIZE_CELL - nextShape.width) / 2);
-	
-	m_renderer->DrawShape(nextShape, NEXT_SHAPE_SCALE);
+	int nextShapePixelX = (X_NEXT_SHAPE_BOARD + (NEXT_SHAPE_BOARD_WIDTH - nextShape.width * SIZE_CELL * (float)(NEXT_SHAPE_SCALE)) / 2);
+	int nextShapePixelY = (Y_NEXT_SHAPE_BOARD + (NEXT_SHAPE_BOARD_HEIGHT - nextShape.height * SIZE_CELL * (float)(NEXT_SHAPE_SCALE)) / 2); 
+	for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
+	{
+		for (int j = 0; j < SHAPE_MATRIX_SIZE; j++)
+		{
+			if (nextShape.matrix[i][j] != 0)
+			{
+#ifdef  __ANDROID__
+				m_renderer->DrawCell(nextShape.type, j * SIZE_CELL + nextShapePixelX, i * SIZE_CELL + nextShapePixelY, (float)NEXT_SHAPE_SCALE, i, j);
+#else
+				m_renderer->DrawCell(nextShape.type, j * SIZE_CELL + nextShapePixelX, i * SIZE_CELL + nextShapePixelY, (float)NEXT_SHAPE_SCALE);
+#endif //  __ANDROID__
+			}
+		}
+	}
 }
 
 void Game::DrawScore()
@@ -74,16 +86,26 @@ void Game::Update()
 	{
 		m_renderer->PreRendering();		
 		m_inputManager->UpdateInput();
-		m_isPlayerWantExit = m_inputManager->IsGoingToQuit();
 		DrawBoard();
 		m_renderer->DrawScoreBoard();
 		m_renderer->DrawNextShapeBoard();
-		m_renderer->DrawShape(m_board->getCurrentShape());
+		m_renderer->DrawCurrentShape(m_board->getCurrentShape());
 		DrawScore();
 		DrawNextShape();
+		m_isPlayerWantExit = m_inputManager->IsGoingToQuit();
 		GameResult gameResult = m_board->getGameResult();
-		if (gameResult == GameResult::RUNING)
-		{			
+		if (gameResult == GameResult::START)
+		{
+			if (m_inputManager->IsMouseUp())
+			{
+				m_board->StartGame();
+				m_board->ConvertShape();
+			}
+		}
+		else if (gameResult == GameResult::RUNNING)
+		{	
+#ifndef __ANDROID__
+
 			if (m_inputManager->IsKeyUpUp())
 			{
 				m_board->Move(MoveType::UP);
@@ -100,6 +122,26 @@ void Game::Update()
 			{
 				m_board->Move(MoveType::RIGHT);
 			}
+
+#else
+			if (m_inputManager->IsTap())
+			{
+				m_board->Move(MoveType::UP);
+			}
+			if (m_inputManager->IsSwipeToDown())
+			{
+				m_board->Move(MoveType::DOWN);
+			}
+			if (m_inputManager->IsSwipeToLeft())
+			{
+				m_board->Move(MoveType::LEFT);
+			}
+			if (m_inputManager->IsSwipeToRight())
+			{
+				m_board->Move(MoveType::RIGHT);
+			}
+
+#endif // !__ANDROID__						
 			after = SDL_GetTicks();
 			if (after - before >= 500)
 			{
@@ -108,7 +150,10 @@ void Game::Update()
 				{
 					m_board->UpdateBoard();
 					m_board->UpdateGameResult();
-					m_board->ConvertShape();
+					if (m_board->getGameResult() == GameResult::RUNNING)
+					{
+						m_board->ConvertShape();
+					}					
 				}
 				else {
 					m_board->Move(MoveType::DOWN);
@@ -135,7 +180,7 @@ void Game::Update()
 					m_isPlayerWantExit = true;
 				}
 			}
-		}
+		}		
 		m_renderer->PostFrame();
 	}
 	m_renderer->CleanUp();

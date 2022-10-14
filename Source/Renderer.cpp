@@ -45,13 +45,13 @@ Renderer::Renderer()
 	}
 }
 
-void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y, int i_scale)
+void Renderer::DrawCell(CellType i_cellType, int i_pixelX, int i_pixelY, float i_scale,int i_coordinateX , int i_coordinateY)
 {
 	SDL_Rect newRect;
-	newRect.w = (SIZE_CELL - 3) * i_scale;
-	newRect.h = (SIZE_CELL - 3) * i_scale;
-	newRect.x = i_Y * SIZE_CELL + 3;
-	newRect.y = i_X * SIZE_CELL + 3;
+	newRect.w = (SIZE_CELL - 3) * (float)i_scale;
+	newRect.h = (SIZE_CELL - 3) * (float)i_scale;
+	newRect.x = i_pixelX + 3 - SIZE_CELL * (float)i_scale * i_coordinateY;
+	newRect.y = i_pixelY + 3 - SIZE_CELL * (float)i_scale * i_coordinateX;
 	if (i_cellType == CellType::I)
 	{
 		SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["I"], NULL, &newRect);
@@ -82,11 +82,11 @@ void Renderer::DrawCell(CellType i_cellType, int i_X, int i_Y, int i_scale)
 	}
 	else if (i_cellType == CellType::WALL)
 	{
-		SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["WALL"], NULL, &newRect);
+		SDL_RenderCopy(m_sdlRenderer, m_loadedTextures["Wall"], NULL, &newRect);
 	}
 }
 
-void Renderer::DrawShape(Shape i_shape, int i_scale)
+void Renderer::DrawCurrentShape(Shape i_shape, float i_scale)
 {
 	for (int i = 0; i < SHAPE_MATRIX_SIZE; i++)
 	{
@@ -94,7 +94,7 @@ void Renderer::DrawShape(Shape i_shape, int i_scale)
 		{
 			if (i_shape.matrix[i][j] != 0)
 			{
-				DrawCell(i_shape.type, i + i_shape.x, j + i_shape.y, i_scale);
+				DrawCell(i_shape.type, (j + i_shape.y) * SIZE_CELL, (i + i_shape.x) * SIZE_CELL, (float)i_scale);
 			}
 		}
 	}

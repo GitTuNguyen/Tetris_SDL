@@ -8,8 +8,8 @@ class Renderer
 {
 public:
 	Renderer();
-	void DrawCell(CellType i_cellType, int i_pixelX, int i_pixelY, int i_scale = 1);
-	void DrawShape(Shape i_shape, int i_scale = 1);
+	void DrawCell(CellType i_cellType, int i_pixelX, int i_pixelY, float i_scale = 1, int i_coordinateX = 0, int i_coordinateY = 0);
+	void DrawCurrentShape(Shape i_shape, float i_scale = 1);
 	void DrawText(std::string text, int i_size, int i_X, int i_Y, int i_H, int i_W);
 	void DrawScoreBoard();
 	void DrawNextShapeBoard();

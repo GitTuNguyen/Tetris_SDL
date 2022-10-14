@@ -18,6 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Board.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Renderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Board.h" />
+    <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\GameDefinition.h" />
+    <ClInclude Include="Source\InputManager.h" />
+    <ClInclude Include="Source\Renderer.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -148,20 +162,6 @@
       <Command>xcopy /y /d  "$(ProjectDir)\Lib\DLL\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Sourse\Board.cpp" />
-    <ClCompile Include="Sourse\Game.cpp" />
-    <ClCompile Include="Sourse\InputManager.cpp" />
-    <ClCompile Include="Sourse\Renderer.cpp" />
-    <ClCompile Include="Sourse\Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Sourse\Board.h" />
-    <ClInclude Include="Sourse\GameDefinition.h" />
-    <ClInclude Include="Sourse\Game.h" />
-    <ClInclude Include="Sourse\InputManager.h" />
-    <ClInclude Include="Sourse\Renderer.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
